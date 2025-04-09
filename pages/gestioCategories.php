@@ -12,7 +12,7 @@
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
             <?php
                function carregartot() {
-                $url = ' https://api101.up.railway.app/book';
+                $url = 'https://api101.up.railway.app/book/';
                 $response = file_get_contents($url);
                 if ($response === FALSE) {
                     echo '<h3>Error en carregar els llibres.</h3>';
@@ -20,24 +20,25 @@
                 }
 
                 $data = json_decode($response, true);
-                $pokemons = $data['results'];
+                $books = isset($data['results']) ? $data['results'] : $data; 
 
-                if (empty($pokemons)) {
-                    echo '<h3>No hi ha pokemons per mostrar.</h3>';
+
+                if (empty($books)) {
+                    echo '<h3>No hi ha llibres per mostrar.</h3>';
                     return;
                 }
 
-                foreach ($pokemons as $entry) {
+                foreach ($books as $entry) {
                     $nom = $entry['name'];
-                    $id = end(explode('/', rtrim($entry['url'], '/'))); // ID del Pokémon
+                    $id = end(explode('/', rtrim($entry['url'], '/')));
 
                     echo "<li>
-                        <p><a href='include/detalles.php?id={$id}'><strong>{$nom}</strong></a></p>
+                        <p><a href='gestioProductes.php?id={$id}'><strong>{$nom}</strong></a></p>
                         <hr/>
                 </li>";
                 }
             }
-
+            
             carregartot();
             ?>
         </div>
